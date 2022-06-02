@@ -8,8 +8,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProductPage extends BasePage{
+    final static Logger LOGGER = LoggerFactory.getLogger(ProductPage.class);
+//    Logger możemy stosować w dowolnej klasie w ramach naszego kodu
+
     public ProductPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
@@ -37,6 +42,7 @@ public class ProductPage extends BasePage{
     By cartSummaryBy = By.cssSelector("#blockcart-modal");
 
     public void openProductPage(){
+        LOGGER.info("Otwieram stronę produktu");
         driver.get("http://sampleshop.inqa.pl/men/1-1-hummingbird-printed-t-shirt.html#/1-rozmiar-s/8-kolor-bialy");
 //        Otwieramy oczekwianą stronę. W docelowym środowisku ten zapis nie będzie oczywiście poprawny ponieważ
 //        otwieramy za każdym razem tę samą stronę. Tu należałoby stworzyć mechanizm, który otwiera stronę produktu
@@ -45,6 +51,7 @@ public class ProductPage extends BasePage{
     }
 
     public void selectColor(String color){
+        LOGGER.info("Wybieram kolor: " + color);
         if(color.equals("white")){
             colorWhiteBox.click();
         } else if (color.equals("black")) {

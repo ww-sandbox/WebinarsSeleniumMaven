@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.ScreenshotUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,17 +89,6 @@ public class ProductPageTests extends BaseTest{
 ////        zbieramy screenshot z wybranym nowym kolorem
 //    }
 //
-    public void takeScreenshot(String fileName){
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(scrFile, new File("./target/screenshots/" + fileName + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        zapis screenshota tak na prawdę sprowadza się do dwóch linijek i dodania obsługi wyjątku IOException
-//        Docelowo screenshot powinien zbierać się z unikalną nazwą - np. nazwa testu + timestamp
-//        I głównie w przypadku testu zakończonego niepowodzeniem
-    }
 
     @Test
     public void orderShirtAllProperties(){
@@ -106,7 +96,7 @@ public class ProductPageTests extends BaseTest{
         productPage.openProductPage();
 //        Tworzymy instancję obiektu strony (page object) oraz otwieramy odpowiedni URL
 
-        takeScreenshot("allProp1");
+        ScreenshotUtil.takeScreenshot(driver,"allProp1");
 //        W przykładzie zbieramy screen shot żeby upewnić się, że produkt został dodany do koszyka. W rzeczywistości
 //        należałoby dodać odpowiednie metody do sprawdzania, czy w koszyku zwiększyła się ilość produktów
 
@@ -117,7 +107,7 @@ public class ProductPageTests extends BaseTest{
         productPage.clickAddToBasketButton();
 //        kliknięcie przycisku dodawania artykułu do koszyka
 
-        takeScreenshot("allProp2");
+        ScreenshotUtil.takeScreenshot(driver, "allProp2");
         //        W przykładzie zbieramy screen shot żeby upewnić się, że produkt został dodany do koszyka. W rzeczywistości
 //        należałoby dodać odpowiednie metody do sprawdzania, czy w koszyku zwiększyła się ilość produktów
         productPage.checkAddToBasketSummaryDisplayed();
@@ -128,12 +118,12 @@ public class ProductPageTests extends BaseTest{
         ProductPage productPage = new ProductPage(driver);
         productPage.openProductPage();
 
-        takeScreenshot("size1");
+        ScreenshotUtil.takeScreenshot(driver, "size1");
 
         productPage.selectSize("S");
         productPage.clickAddToBasketButton();
 
-        takeScreenshot("size2");
+        ScreenshotUtil.takeScreenshot(driver, "size2");
     }
 //    Przykład bardzo podobny do poprzedniego, jedynie ustawiamy jeden parametr produktu zamiast wszystkich trzech
 //    Przykład pokazuje, że w przypadku POP dużo łatwiej, szybciej i czytelniej można budować różne testy
@@ -149,6 +139,6 @@ public class ProductPageTests extends BaseTest{
 
         Assert.assertEquals(color, "czarny");
         Assert.assertEquals(size, "L");
-        Assert.assertEquals(qty, "3");
+        Assert.assertEquals(qty, "2");
     }
 }
