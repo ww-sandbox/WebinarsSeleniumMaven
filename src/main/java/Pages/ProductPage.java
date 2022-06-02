@@ -1,10 +1,12 @@
 package Pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 public class ProductPage extends BasePage{
@@ -15,17 +17,24 @@ public class ProductPage extends BasePage{
 //        @FindBy, @FindBys oraz @FindAll
     }
 
-    By colorWhiteBy = By.xpath("//input[@title=\"Biały\"]");
-    By colorBlackBy = By.xpath("//input[@title=\"czarny\"]");
-    By selectSizeBy = By.id("group_1");
-    By numberOfPiecesBy = By.xpath("//input[@name=\"qty\"]");
-    By addToBasketBy = By.cssSelector(".add button");
+    @FindBy(xpath = "//input[@title=\"Biały\"]")
+    WebElement colorWhiteBox;
+    @FindBy(xpath = "//input[@title=\"czarny\"]")
+    WebElement colorBlackBox;
+    @FindBy(id = "group_1")
+    WebElement selectSizeElement;
+    @FindBy(xpath = "//input[@name=\"qty\"]")
+    WebElement numberOfPiecesInput;
+    @FindBy(css = ".add button")
+    WebElement addToBasketButton;
 //      Deklaracja lokalizatorów WebElementów - stworzone przed wykorzytaniem PageFactory
 
     @FindBy(css=".add button")
     WebElement addToBasketButtonElement;
 //    WebElement deklarowany w oparciu o PageFactory
-
+    @FindBy(css = "#blockcart-modal")
+    WebElement cartSummaryElement;
+    By cartSummaryBy = By.cssSelector("#blockcart-modal");
 
     public void openProductPage(){
         driver.get("http://sampleshop.inqa.pl/men/1-1-hummingbird-printed-t-shirt.html#/1-rozmiar-s/8-kolor-bialy");
@@ -37,21 +46,21 @@ public class ProductPage extends BasePage{
 
     public void selectColor(String color){
         if(color.equals("white")){
-            driver.findElement(colorWhiteBy).click();
+            colorWhiteBox.click();
         } else if (color.equals("black")) {
-            driver.findElement(colorBlackBy).click();
+            colorBlackBox.click();
         }
     }
 
     public void selectSize(String size){
-        WebElement selectElement = driver.findElement(selectSizeBy);
-        Select selectSize = new Select(selectElement);
-        selectSize.selectByVisibleText("M");
+        Select selectSize = new Select(selectSizeElement);
+        selectSize.selectByVisibleText(size);
     }
 
     public void setNumberOfPieces(String number){
-        WebElement numberOfPiecesElement = driver.findElement(numberOfPiecesBy);
-        numberOfPiecesElement.sendKeys(number);
+        numberOfPiecesInput.click();
+        numberOfPiecesInput.clear();
+        numberOfPiecesInput.sendKeys(number);
     }
 
     public void clickAddToBasketButton(){
@@ -67,9 +76,23 @@ public class ProductPage extends BasePage{
 //        Należy jednak pamiętać, że ten zabieg zadziała dobrze jedynie w przypadku elementów w pełni statycznych.
     }
 
-    public void checkAddToBasketSummary(){
+    public void checkAddToBasketSummaryDisplayed(){
 //        waitForElementVisibility(.....);
+        WebElement cartSummaryElement = waitForPresenceOfElement(cartSummaryBy);
+        waitForElementVisibility(cartSummaryElement);
 //        Przykład wykorzystania metody służącej do oczekiwania na określony element, zadeklarowanej w klasie bazowej.
 //        Jest to jedynie rozpoczęty przykład, który wymaga dalszej implementacji.
+    }
+
+    public String getColorFromBasketSummary(){
+        return cartSummaryElement.findElement(By.cssSelector(".kolor strong")).getText();
+    }
+
+    public String getSizeFromBasketSummary(){
+        return cartSummaryElement.findElement(By.cssSelector(".rozmiar strong")).getText();
+    }
+
+    public String getQuantityFromBasketSummary(){
+        return cartSummaryElement.findElement(By.cssSelector(".product-quantity strong")).getText();
     }
 }

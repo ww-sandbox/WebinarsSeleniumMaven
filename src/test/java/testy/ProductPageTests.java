@@ -111,8 +111,8 @@ public class ProductPageTests extends BaseTest{
 //        należałoby dodać odpowiednie metody do sprawdzania, czy w koszyku zwiększyła się ilość produktów
 
         productPage.selectColor("black");
-        productPage.setNumberOfPieces("3");
         productPage.selectSize("L");
+        productPage.setNumberOfPieces("3");
 //        Metody ustawiające odpowiednie paramatry zamówienia
         productPage.clickAddToBasketButton();
 //        kliknięcie przycisku dodawania artykułu do koszyka
@@ -120,9 +120,10 @@ public class ProductPageTests extends BaseTest{
         takeScreenshot("allProp2");
         //        W przykładzie zbieramy screen shot żeby upewnić się, że produkt został dodany do koszyka. W rzeczywistości
 //        należałoby dodać odpowiednie metody do sprawdzania, czy w koszyku zwiększyła się ilość produktów
+        productPage.checkAddToBasketSummaryDisplayed();
     }
 
-    @Test
+    @Test(enabled = false)
     public void orderShirtOnlySize(){
         ProductPage productPage = new ProductPage(driver);
         productPage.openProductPage();
@@ -136,4 +137,18 @@ public class ProductPageTests extends BaseTest{
     }
 //    Przykład bardzo podobny do poprzedniego, jedynie ustawiamy jeden parametr produktu zamiast wszystkich trzech
 //    Przykład pokazuje, że w przypadku POP dużo łatwiej, szybciej i czytelniej można budować różne testy
+
+    @Test(dependsOnMethods = "orderShirtAllProperties")
+    public void checkCartOverviewParameters(){
+        ProductPage productPage = new ProductPage(driver);
+
+        productPage.checkAddToBasketSummaryDisplayed();
+        String color = productPage.getColorFromBasketSummary();
+        String size = productPage.getSizeFromBasketSummary();
+        String qty = productPage.getQuantityFromBasketSummary();
+
+        Assert.assertEquals(color, "czarny");
+        Assert.assertEquals(size, "L");
+        Assert.assertEquals(qty, "3");
+    }
 }

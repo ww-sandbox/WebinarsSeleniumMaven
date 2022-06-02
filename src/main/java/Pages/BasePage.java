@@ -23,8 +23,8 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitForPresenceOfElement(By elementLocator){
+    public WebElement waitForPresenceOfElement(By elementLocator){
         WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(elementLocator));
     }
 }

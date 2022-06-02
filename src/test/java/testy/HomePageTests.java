@@ -1,6 +1,8 @@
 package testy;
 
 import Pages.HomePage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -22,7 +24,6 @@ public class HomePageTests extends BaseTest {
 //        otwieramy stronę (przechodzimy do odpowiedniego URL)
         String actualPrice = homePage.getPriceOfFirstElement();
 //        Odwołując się do metody tej strony pobieramy cenę
-
         Assert.assertEquals("10", actualPrice);
     }
 

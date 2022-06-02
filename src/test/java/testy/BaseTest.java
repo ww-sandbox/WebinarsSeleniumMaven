@@ -2,6 +2,7 @@ package testy;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -12,10 +13,16 @@ public class BaseTest {
 
     @BeforeClass(alwaysRun = true)
     public void setUp(){
-        System.out.println(System.getProperty("TestDriver"));
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().window().maximize();
+    }
+
+    private static FirefoxOptions setFirefoxOptions(){
+        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,"/dev/null");
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("-private");
+        return options;
     }
 
     @AfterClass(alwaysRun = true)
