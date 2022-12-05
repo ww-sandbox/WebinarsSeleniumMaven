@@ -15,14 +15,15 @@ public class HomePage extends BasePage{
     public void openHomePage(){
         driver.get("http://sampleshop.inqa.pl/");
     }
+//    Przejście do odpowiedniej strony. Docelowo nie będziemy wykorzystywać sztywno zapisanych (zahardokodowanych)
+//    adresów URL, a raczej pobierali je z jakiegoś pliku konfiguracyjnego
 
     public void openFirstProduct(){
-        driver.findElement(firstProductBy).click();
+        driver.findElement(firstProductBy);
     }
 
-    public boolean checkFirstProductIsDisplayed(){
+    public void checkFirstProductIsDisplayed(){
         WebElement firstProduct = driver.findElement(firstProductBy);
-        return firstProduct.isDisplayed();
     }
     public String getPriceOfFirstElement(){
         String actualPrice = driver.findElement(firstProductPriceBy).getText();
